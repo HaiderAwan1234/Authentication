@@ -23,7 +23,6 @@ body {
 .main {
   width: 850px;
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 20px;
   padding: 30px;
@@ -66,20 +65,23 @@ body {
 }
 
 .send {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 55px;
   height: 55px;
   border-radius: 50%;
-  background: #3b82f6;
+  background: #3b9ff6;
   color: white;
   padding: 15px;
   cursor: pointer;
   transition: 0.3s;
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.45);
+  font-size: 16px;
 }
 
 .send:hover {
-  transform: translateY(-3px) scale(1.08);
-  background: #2563eb;
+  transform: translateY(-3px) scale(1);
+  background: #4276e8;
 }
 
 .show {
