@@ -5,6 +5,7 @@ import { userRoute } from "./Routes/userRoute.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { connectDB } from "./Config/connect.js";
 import cors from "cors";
+import { postRoute } from "./Routes/postRoute.js";
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(urlencoded({ extended: false }));
 
 app.use("/user/api", userRoute);
+app.use("/user/api", postRoute);
 
 app.use(errorHandler);
 
