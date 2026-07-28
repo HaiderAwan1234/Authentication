@@ -27,6 +27,11 @@ export const PostSchema = mongoose.Schema(
       required: true,
       ref: "user",
     },
+    comments: {
+      type: [],
+      default: [],
+      required: false,
+    },
   },
   {
     timestamps: true,

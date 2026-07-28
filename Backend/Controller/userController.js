@@ -1,6 +1,7 @@
 import { User } from "./../models/userModel.js";
 import bcrypt from "bcrypt";
 import nodemailer, { createTransport } from "nodemailer";
+import jwt from "jsonwebtoken";
 
 // ......FUNCTIONS//////////
 
@@ -210,7 +211,18 @@ export const signup = async (req, res) => {
 
   sendMail(f_name, m_mail, newUser);
 
-  res.send(newUser);
+  res.send({
+    f_name: newUser.f_name,
+    l_name: newUser.l_name,
+    m_mail: newUser.m_mail,
+    password: newUser.password,
+    date: newUser.date,
+    month: newUser.month,
+    year: newUser.year,
+    gender: newUser.gender,
+    otp: newUser.otp,
+    token: await generateToken(newUser._id),
+  });
 };
 
 export const verifyOtp = async (req, res) => {
@@ -266,5 +278,13 @@ export const login = async (req, res) => {
     throw new Error("Invalid Password");
   }
 
-  res.send(checkMail);
+  res.send({
+    m_mail: checkMail.m_mail,
+    password: checkMail.password,
+    token: await generateToken(checkMail._id),
+  });
+};
+
+const generateToken = async (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };

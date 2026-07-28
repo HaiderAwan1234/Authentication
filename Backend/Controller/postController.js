@@ -1,9 +1,6 @@
 import { Post } from "../models/postModel.js";
 
 export const post = async (req, res) => {
-  console.log(req.body);
-  console.log(req.params);
-
   const { textArea, background } = req.body;
   const { user_id } = req.params;
 
@@ -14,4 +11,8 @@ export const post = async (req, res) => {
   });
 
   res.send(userPost);
+};
+
+export const comment = async (req, res) => {
+  res.send("This is Comment");
 };
