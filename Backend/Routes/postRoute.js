@@ -6,4 +6,4 @@ export const postRoute = express.Router();
 
 postRoute.post("/post/:user_id", post);
 
-postRoute.post("/comment", tokenHandler, comment);
+postRoute.post("/comment/:post_id", tokenHandler, comment);

@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
+import { User } from "../models/userModel.js";
 
-export const tokenHandler = (req, res, next) => {
+export const tokenHandler = async (req, res, next) => {
   let token;
   if (
     req.headers.authorization &&
@@ -9,10 +10,19 @@ export const tokenHandler = (req, res, next) => {
     try {
       token = req.headers.authorization.split(" ")[1];
       let decode = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decode);
+
+      let user = await User.findById(decode.id);
+
+      if (!user) {
+        res.status(401);
+        throw new Error("User not found");
+      }
+
+      req.user = user;
+      next();
     } catch (error) {
       res.status(401);
-      throw new Error("Invalid Token !!");
+      throw new Error("Invalid Token");
     }
   } else {
     res.status(404);

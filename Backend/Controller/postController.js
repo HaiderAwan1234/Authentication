@@ -14,5 +14,19 @@ export const post = async (req, res) => {
 };
 
 export const comment = async (req, res) => {
-  res.send("This is Comment");
+  const { comment } = req.body;
+  const { post_id } = req.params;
+
+  const findPost = await Post.findById(post_id);
+
+  if (!findPost) {
+    res.status(404);
+    throw new Error("Post not found !!");
+  }
+
+  await findPost.comments.push({ comment, user_id: req.user._id });
+
+  await findPost.save();
+
+  res.send(findPost);
 };
