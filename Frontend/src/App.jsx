@@ -1,30 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { IoSend } from "react-icons/io5";
 import Show from "./Show";
+import { serviceComment } from "./features/post/postSlice";
 
 const App = () => {
-  const [commentData, setCommentData] = useState([]);
-
   const [comment, setComment] = useState("");
 
-  const handleChange = (e) => {
-    setComment(e.target.value);
+  const dispatch = useDispatch();
+
+  const commentData = {
+    comment,
   };
 
   const sendHandler = () => {
-    setCommentData([
-      ...commentData,
-      {
-        comment: comment,
-      },
-    ]);
-
-    setComment("");
+    dispatch(serviceComment(commentData));
   };
-
-  useEffect(() => {
-    console.log(commentData);
-  }, [commentData]);
 
   return (
     <>
@@ -36,7 +27,7 @@ const App = () => {
             <input
               name="comment"
               value={comment}
-              onChange={handleChange}
+              onChange={(e) => setComment(e.target.value)}
               placeholder="Write comment..."
               className="input"
             />
@@ -47,7 +38,7 @@ const App = () => {
           </div>
         </div>
 
-        <Show commentData={commentData} />
+        {/* <Show commentData={commentData} /> */}
       </div>
     </>
   );

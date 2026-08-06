@@ -2,51 +2,55 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { commentService } from "./postService";
 
 const initialState = {
-  post: [],
-  postSuccess: false,
-  postError: false,
-  postMessagee: false,
-  postloading: false,
+  comment: [],
+  commentSuccess: false,
+  commentError: false,
+  commentMessagee: false,
+  commentloading: false,
 };
 
 export const serviceComment = createAsyncThunk(
   "comment",
   async (commentData, thunkAPI) => {
     try {
-      return await commentService(commentData);
+      const token = thunkAPI.getState().auth.user.token;
+
+      return await commentService(commentData, token);
     } catch (error) {
-      thunkAPI.rejectWithValue(error.response.data.error);
+      return thunkAPI.rejectWithValue(error.response.data.error);
     }
   },
 );
 
 export const postSlice = createSlice({
-  name: "post",
+  name: "comment",
   initialState,
-  reducer: {
-    postReset: (state) => {
-      postSuccess = false;
-      postError = false;
-      postMessagee = false;
-      postloading = false;
+  reducers: {
+    commentReset: (state) => {
+      commentSuccess = false;
+      commentError = false;
+      commentMessagee = false;
+      commentloading = false;
     },
   },
   extraReducer: (builder) => {
     builder
       .addCase(serviceComment.pending, (state, action) => {
-        state.postloading = true;
+        state.commentloading = true;
       })
       .addCase(serviceComment.rejected, (state, action) => {
-        state.postLoading = false;
-        state.postError = true;
-        state.postMessage = true;
+        state.commentLoading = false;
+        state.commentError = true;
+        state.commentMessage = true;
       })
       .addCase(serviceComment.fulfilled, (state, action) => {
-        state.postsuccess = true;
-        state.postloading = true;
-        state.postError = false;
-        state.postMessage = action.payload;
-        state.post.push(action.payload);
+        state.commentsuccess = true;
+        state.commentloading = true;
+        state.commentError = false;
+        state.commentMessage = action.payload;
       });
   },
 });
+
+export default postSlice.reducer;
+export const { commentReset } = postSlice.actions;

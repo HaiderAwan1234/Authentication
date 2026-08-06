@@ -13,7 +13,7 @@ export const serviceSignup = createAsyncThunk(
   "signup",
   async (userData, thunkAPI) => {
     try {
-      return await signupService;
+      return await signupService(userData);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.error);
     }
@@ -65,7 +65,7 @@ export const userSlice = createSlice({
       })
       .addCase(serviceSignup.fulfilled, (state, action) => {
         state.userLoading = false;
-        state.userErorr = false;
+        state.userError = false;
         state.userMessage = "Api is fulfilled successfully";
         state.userSuccess = true;
         state.user = action.payload;
